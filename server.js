@@ -6,6 +6,11 @@ const client = new pg.Client(process.env.DATABASE_URL || 'postgres://localhost/a
 app.use(express.json())
 app.use(require('morgan')('dev'))
 
+// Error handling route
+app.use((error, req, res, next)=>{
+    res.status(res.status || 500).send({error : error})
+});
+
 //// API routes
 // GET departments route 
 app.get('/api/departments', async (req, res, next) => {
@@ -80,6 +85,7 @@ app.delete('/api/employees/:id', async (req, res, next) => {
     next(ex)
   }
 })
+
 
 // Init
 const init = async () => {
